@@ -9,6 +9,9 @@ const TodoItem = (props) => {
             <div className = 'todo__ulabel'>Assigned To:</div>
             <UserName {...props.user} />
         </div>
+        <div>
+            <button onClick = {()=>props.deleteTodoItem(props.id)} >Delete</button>
+        </div>
     </div>
     
 }

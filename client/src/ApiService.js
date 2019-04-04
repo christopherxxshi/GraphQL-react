@@ -38,6 +38,25 @@ class ApiService {
         }
     }
 
+    async mutateGraphQlData(resource, params, fields) {
+        const query = `mutation{${resource} ${this.paramsToString(params)} ${fields}}`
+        const res = await fetch(this.apiUrl, {
+            method: 'POST',
+            mode: 'cors',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            }),
+            body: JSON.stringify({query}),
+        });
+        if (res.ok) {
+            const body = await res.json();
+            return body.data;
+        } else {
+            throw new Error(res.status);
+        }
+    }
+
     /**
      * 
      * @param {object} params
@@ -58,6 +77,11 @@ class ApiService {
         const data = await this.getGraphQlData('todos', params, this.todoFields);
         //return todos list
         return data.todos;
+    }
+
+    async deleteTodo(params = {}){
+        const data = await this.mutateGraphQlData('deleteTodo', params, this.todoFields);
+        return data.deleteTodo;
     }
 
     /**

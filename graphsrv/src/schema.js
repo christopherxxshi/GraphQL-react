@@ -3,6 +3,8 @@ import Todos from './data/todos';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import sumBy from 'lodash/sumBy';
+import remove from  "lodash/remove";
+
 import {
 GraphQLInt,
         GraphQLBoolean,
@@ -83,7 +85,7 @@ const TodoQueryRootType = new GraphQLObjectType({
                 type: new GraphQLList(TodoType),
                 description: 'List of Todos',
                 resolve: (parent, args) => {
-                    if (Object.keys(args).length) {
+                    if (Object.keys(args).length){
                         return filter(Todos, args);
                     }
                     return Todos;
@@ -92,8 +94,31 @@ const TodoQueryRootType = new GraphQLObjectType({
         })
 });
 
+const TodoMutationRootType = new GraphQLObjectType({
+    name: 'TodoAppMutations',
+    description: 'change todos',
+    fields: () => ({
+        deleteTodo: {
+            args: {
+                id: {type: GraphQLInt},
+            },
+            type: TodoType,
+            description: 'Delete Todo',
+            resolve: (parent, args) => {
+                if (Object.keys(args).length) {
+                    let obj = filter(Todos, args)[0];
+                    remove(Todos, args);
+                    return obj;
+                }
+                return {};
+            }
+        }
+    })
+});
+
 const schema = new GraphQLSchema({
     query: TodoQueryRootType,
+    mutation: TodoMutationRootType,
 });
 
 export default schema;

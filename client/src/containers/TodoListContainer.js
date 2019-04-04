@@ -18,14 +18,25 @@ class TodoListContainer extends React.Component {
             const todos = await ApiService.getTodos({userId});
             this.setState({todos});
         } catch (e) {
-            console.error(`An error ${e.message} occured while loading tasks for user ${userId}`);
+            console.error(`An error ${e.message} occurred while loading tasks for user ${userId}`);
+        }
+    }
+
+    async deleteTodoItem(id){
+        const userId = parseInt(this.props.match.params.userId, 10);
+        try{
+            await ApiService.deleteTodo({id});
+            const todos = await ApiService.getTodos({userId});
+            this.setState({todos});
+        } catch(e){
+            console.error(`An error ${e.message} occurred while deleting tasks for todo id: ${id}`)
         }
     }
 
     render () {
         return (
            <div className="todo">
-               <TodoList todos={this.state.todos} />
+               <TodoList todos={this.state.todos} deleteTodoItem = {(id) => this.deleteTodoItem(id)}/>
                <Link className="todo__linkback" to='/'>Back to Users search</Link>
            </div>
         );

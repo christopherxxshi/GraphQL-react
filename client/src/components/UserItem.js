@@ -11,6 +11,7 @@ const UserItem = (props) => {
             <UserName first_name={first_name} last_name={last_name} />
             <UserInfo {...info} />
             <Link className='user__todo-link' to={`/todos/${id}`}>View Todos ({todo_count})</Link>
+            <Link className='user__todo-link' to={`/addTodo/${id}`}>Add Todos </Link>
         </div>
     );
 

@@ -13,7 +13,7 @@ class TodoListContainer extends React.Component {
     }
 
     async componentDidMount() {
-        const userId = parseInt(this.props.match.params.userId, 10);
+        const userId = this.props.match.params.userId;
         try {
             const todos = await ApiService.getTodos({userId});
             this.setState({todos});
@@ -23,7 +23,7 @@ class TodoListContainer extends React.Component {
     }
 
     async deleteTodoItem(id){
-        const userId = parseInt(this.props.match.params.userId, 10);
+        const userId = this.props.match.params.userId;
         try{
             await ApiService.deleteTodo({id});
             const todos = await ApiService.getTodos({userId});

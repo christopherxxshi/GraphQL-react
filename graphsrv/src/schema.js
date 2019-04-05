@@ -1,6 +1,7 @@
 import Users from './data/users';
 import Todos from './data/todos';
 import find from 'lodash/find';
+import concat from  "lodash/concat";
 import filter from 'lodash/filter';
 import sumBy from 'lodash/sumBy';
 import remove from  "lodash/remove";
@@ -19,7 +20,7 @@ const UserType = new GraphQLObjectType({
     name: 'User',
     description: 'Users in company',
     fields: () => ({
-            id: {type: new GraphQLNonNull(GraphQLInt)},
+            id: {type: new GraphQLNonNull(GraphQLString)},
             first_name: {type: new GraphQLNonNull(GraphQLString)},
             last_name: {type: new GraphQLNonNull(GraphQLString)},
             email: {type: GraphQLString},
@@ -45,7 +46,7 @@ const TodoType = new GraphQLObjectType({
     name: 'Todo',
     description: 'Task for user',
     fields: () => ({
-            id: {type: new GraphQLNonNull(GraphQLInt)},
+            id: {type: new GraphQLNonNull(GraphQLString)},
             title: {type: GraphQLString},
             completed: {type: new GraphQLNonNull(GraphQLBoolean)},
             user: {
@@ -63,6 +64,7 @@ const TodoQueryRootType = new GraphQLObjectType({
     fields: () => ({
             users: {
                 args: {
+                    id : {type:GraphQLString},
                     first_name: {type: GraphQLString},
                     last_name: {type: GraphQLString},
                     department: {type: GraphQLString},
@@ -79,7 +81,7 @@ const TodoQueryRootType = new GraphQLObjectType({
             },
             todos: {
                 args: {
-                    userId: {type: GraphQLInt},
+                    userId: {type: GraphQLString},
                     completed: {type: GraphQLBoolean},
                 },
                 type: new GraphQLList(TodoType),
@@ -100,7 +102,7 @@ const TodoMutationRootType = new GraphQLObjectType({
     fields: () => ({
         deleteTodo: {
             args: {
-                id: {type: GraphQLInt},
+                id: {type: GraphQLString},
             },
             type: TodoType,
             description: 'Delete Todo',
@@ -109,6 +111,24 @@ const TodoMutationRootType = new GraphQLObjectType({
                     let obj = filter(Todos, args)[0];
                     remove(Todos, args);
                     return obj;
+                }
+                return {};
+            }
+        },
+        createTodo: {
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLString)},
+                title: {type: GraphQLString},
+                completed: {type: new GraphQLNonNull(GraphQLBoolean)},
+                userId: {type: new GraphQLNonNull(GraphQLString)},
+            },
+            type: TodoType,
+            description: 'Create Todo',
+            resolve: (parent, args) => {
+                console.log(args);
+                if (Object.keys(args).length) {
+                    Todos.push(args);
+                    return filter(Todos, args)[0];
                 }
                 return {};
             }

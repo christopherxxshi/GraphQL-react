@@ -84,6 +84,11 @@ class ApiService {
         return data.deleteTodo;
     }
 
+    async createTodo(params = {}){
+        const data = await this.mutateGraphQlData('createTodo', params, this.todoFields);
+        return data.createTodo;
+    }
+
     /**
      * 
      * @param {object} params

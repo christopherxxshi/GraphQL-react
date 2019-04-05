@@ -31,8 +31,8 @@ class AddTodoContainer extends Component {
     render() {
 
         return (
-            <div className="user">
-                <label>Add Todo to {this.state.username}</label>
+            <div className="todo__list">
+                <label style={{marginTop: "30px"}} >Add Todo to {this.state.username}</label>
                 <AddTodoForm submitHandler={this.addTodo}/>
             </div>
         );

@@ -3,6 +3,7 @@ import './styles/style.css';
 import UserListContainer from './containers/UserListContainer';
 import TodoListContainer from './containers/TodoListContainer';
 import AddTodoContainer from './containers/AddTodoContainer';
+import UpdateTodoContainer from './containers/UpdateTodoContainer';
 import { Route, Switch } from 'react-router-dom';
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
         <Route exact path='/' component={UserListContainer}/>
         <Route path='/todos/:userId' component={TodoListContainer}/>
         <Route path='/addTodo/:userId' component={AddTodoContainer}/>
+        <Route path='/updateTodo/:todoId' component={UpdateTodoContainer}/>
     </Switch>
 };
 

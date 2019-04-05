@@ -11,7 +11,7 @@ class ApiService {
     constructor() {
         this.apiUrl = 'http://localhost:3001/graphql';
         this.userFields = `{id, first_name, last_name, email, department, country, todo_count}`;
-        this.todoFields = `{id title completed user {first_name, last_name}}`;
+        this.todoFields = `{id title completed user{id first_name, last_name}}`;
     }
 
     /**
@@ -75,7 +75,6 @@ class ApiService {
      */
     async getTodos(params = {}) {
         const data = await this.getGraphQlData('todos', params, this.todoFields);
-        //return todos list
         return data.todos;
     }
 
@@ -86,6 +85,11 @@ class ApiService {
 
     async createTodo(params = {}){
         const data = await this.mutateGraphQlData('createTodo', params, this.todoFields);
+        return data.createTodo;
+    }
+
+    async updateTodo(params = {}){
+        const data = await this.mutateGraphQlData('updateTodo', params, this.todoFields);
         return data.createTodo;
     }
 

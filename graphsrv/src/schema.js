@@ -81,6 +81,7 @@ const TodoQueryRootType = new GraphQLObjectType({
             },
             todos: {
                 args: {
+                    id : {type:GraphQLString},
                     userId: {type: GraphQLString},
                     completed: {type: GraphQLBoolean},
                 },
@@ -125,9 +126,29 @@ const TodoMutationRootType = new GraphQLObjectType({
             type: TodoType,
             description: 'Create Todo',
             resolve: (parent, args) => {
-                console.log(args);
                 if (Object.keys(args).length) {
                     Todos.push(args);
+                    return filter(Todos, args)[0];
+                }
+                return {};
+            }
+        },
+        updateTodo: {
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLString)},
+                title: {type: GraphQLString},
+                completed: {type: new GraphQLNonNull(GraphQLBoolean)},
+                userId: {type: new GraphQLNonNull(GraphQLString)},
+            },
+            type: TodoType,
+            description: 'Update Todo',
+            resolve: (parent, args) => {
+                if (Object.keys(args).length) {
+                    for(let i = 0; i < Todos.length; i++){
+                        if(Todos[i].id === args.id){
+                            Todos[i] = args;
+                        }
+                    }
                     return filter(Todos, args)[0];
                 }
                 return {};

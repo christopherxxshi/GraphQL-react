@@ -9,6 +9,7 @@ class AddTodoForm extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
     }
 
     handleChange(event) {
@@ -17,14 +18,18 @@ class AddTodoForm extends Component {
         }else{
             this.setState({[event.target.name]: event.target.value});
         }
+    }
 
+    componentDidMount() {
+        if(this.props.info !== undefined){
+            this.setState({...this.props.info})
+        }
     }
 
     handleSubmit(event) {
         event.preventDefault();
         return this.props.submitHandler(this.state);
     }
-
     render() {
         return (
             <form className="user__form" onSubmit={this.handleSubmit}>

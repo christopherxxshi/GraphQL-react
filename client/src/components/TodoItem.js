@@ -1,5 +1,6 @@
 import React from 'react';
 import UserName from './UserName';
+import {Link}  from 'react-router-dom';
 
 const TodoItem = (props) => {
     const completedClass = props.completed ? 'todo__item--completed' : '';
@@ -9,11 +10,10 @@ const TodoItem = (props) => {
             <div className = 'todo__ulabel'>Assigned To:</div>
             <UserName {...props.user} />
         </div>
-        <div>
-            <button onClick = {()=>props.deleteTodoItem(props.id)} >Delete</button>
-        </div>
+            <button className='user__todo-link' onClick = {()=>props.deleteTodoItem(props.id)} >Delete</button>
+        <a href={`/updateTodo/${props.id}`}><button>Update Todos</button> </a>
     </div>
     
-}
+};
 
 export default TodoItem;
